@@ -6,19 +6,32 @@
 
 "use strict"
 
-function enterClicked() {
+async function weatherClicked() {
+  try {
+    //input
+    let resultJSON = await fetch(
+      "https://api.openweathermap.org/data/2.5/weather?lat=45.4211435&lon=-75.6900574&appid=fe1d80e1e103cff8c6afd190cad23fa5"
+    )
+    let jsonData = await resultJSON.json()
+    console.log(jsonData)
 
-  // input
+    //process
+    let weatherData = jsonData.weather[0]
+    console.log(weatherData)
+    let weatherText = weatherData.description
+    console.log(weatherText)
+    let weatherIconID = weatherData.icon
+    console.log(weatherIconID)
+    let weatherIconURL =
+      "https://openweathermap.org/img/wn/" + weatherIconID + "@2x.png"
+    console.log(weatherIconURL)
 
-  let day = document.getElementById('day').value
-  let age  = document.getElementById('age').value
-
-  // process
-  // output
-
-  if ((day == "tuesday" || day == "thursday")|| (age > 12 && age < 21 )) {
-    document.getElementById("user-info").innerHTML = "Your pricing is: student pricing"
-  } else {
-    document.getElementById("user-info").innerHTML = "Your pricing is: regular pricing"
+    // output
+    document.getElementById("weather-icon").innerHTML =
+      '<img src="' + weatherIconURL + '" alt="weather icon" width="250" />'
+    document.getElementById("weather-info").innerHTML =
+      "<p>" + weatherData.description + "</p>"
+  } catch (error) {
+    console.error(error)
   }
 }
